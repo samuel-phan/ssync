@@ -181,29 +181,30 @@ func rsync(projectDir string, opts RsyncOpts) error {
 		rsyncArgs = append(rsyncArgs, "--dry-run")
 	}
 
-	// nodes
+	// do the copy
 	rsyncArgs = append(rsyncArgs, opts.ProjectDir)
-	rsyncArgs = append(rsyncArgs, opts.Nodes...)
-
-	sb := []string{"rsync"}
-	for _, s := range rsyncArgs {
-		if strings.Contains(s, " ") {
-			sb = append(sb, fmt.Sprintf("\"%s\"", s))
-		} else {
-			sb = append(sb, s)
+	for _, node := range opts.Nodes {
+		cmdArgs := rsyncArgs[:]
+		cmdArgs = append(cmdArgs, node)
+		sb := []string{"rsync"}
+		for _, s := range cmdArgs {
+			if strings.Contains(s, " ") {
+				sb = append(sb, fmt.Sprintf("\"%s\"", s))
+			} else {
+				sb = append(sb, s)
+			}
+		}
+		fmt.Printf("Running: %s\n", strings.Join(sb, " "))
+		cmd := exec.Command("rsync", cmdArgs...)
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Run()
+		if err != nil {
+			return err
 		}
 	}
-	fmt.Printf("Running: %s\n", strings.Join(sb, " "))
-	cmd := exec.Command("rsync", rsyncArgs...)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		return err
-	} else {
-		return nil
-	}
+	return nil
 }
 
 func isFlagPassed(name string) bool {
