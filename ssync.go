@@ -19,6 +19,7 @@ type RsyncOpts struct {
 	Delete     bool
 	SudoUser   string
 	DryRun     bool
+	RsyncArgs  []string
 }
 
 const (
@@ -36,12 +37,12 @@ var (
 	dryRunFlag   bool
 
 	// Print debug logs
-	Debug    = false
+	Verbose  = false
 	myLogger = log.New(os.Stderr, "", 0)
 )
 
 func debugf(format string, args ...interface{}) {
-	if !Debug {
+	if !Verbose {
 		return
 	}
 	s := fmt.Sprintf(format, args...)
@@ -64,19 +65,36 @@ func main() {
     Rsync to the given nodes. The rsync options come from the project
     configuration if found; the user configuration, otherwise.
 
+You can pass any arbitrary arguments to rsync directly by addind "--":
+
+%s -n -- -q --exclude-from=my_excludes
+
+    "-n" is evaluated by ssync
+    "-q --exclude-from=my_excludes" is passed as is to rsync.
+
 Options:
-`, os.Args[0], os.Args[0], os.Args[0], os.Args[0])
+`, os.Args[0], os.Args[0], os.Args[0], os.Args[0], os.Args[0])
 		flag.PrintDefaults()
 	}
-	// TODO: add exclude & other rsync flags
 	flag.StringVar(&sudoUserFlag, sudoUserFlagName, "", "destination user ownership")
 	flag.StringVar(&sudoUserFlag, sudoUserFlagShortName, "", "destination user ownership")
 
 	flag.BoolVar(&dryRunFlag, dryRunFlagName, false, "show what would have been transferred")
 	flag.BoolVar(&dryRunFlag, dryRunFlagShortName, false, "show what would have been transferred")
 
-	flag.BoolVar(&Debug, "debug", false, "print debug messages")
-	flag.BoolVar(&Debug, "d", false, "print debug messages")
+	flag.BoolVar(&Verbose, "verbose", false, "print verbose messages")
+	flag.BoolVar(&Verbose, "v", false, "print verbose messages")
+
+	// Extract the args for rsync
+	var rsyncArgs []string
+	for i := len(os.Args) - 1; i > 0; i-- {
+		if os.Args[i] == "--" {
+			rsyncArgs = os.Args[i+1:]
+			os.Args = os.Args[:i]
+			break
+		}
+	}
+
 	flag.Parse()
 
 	// Load user config
@@ -103,7 +121,10 @@ Options:
 	}
 
 	// Prepare arguments for rsync
-	rsyncOpts := RsyncOpts{DryRun: dryRunFlag}
+	rsyncOpts := RsyncOpts{
+		DryRun:    dryRunFlag,
+		RsyncArgs: rsyncArgs,
+	}
 
 	// Load project config if possible
 	projectDir, err := findProjectDir()
@@ -114,7 +135,7 @@ Options:
 			log.Fatal(err)
 		}
 
-		// get exclude opt from user config
+		// Get exclude opt from user config
 		rsyncOpts.Excludes = userConf.Excludes
 	} else {
 		// Project dir found
@@ -130,21 +151,22 @@ Options:
 		rsyncOpts.SudoUser = projectConf.SudoUser
 	}
 
-	// check nodes arg
+	// Check nodes arg
 	if len(flag.Args()) > 0 {
 		rsyncOpts.Nodes = flag.Args()
 	}
 
-	// check delete arg
+	// Check delete arg
 	if isFlagPassed(deleteFlagName) {
 		rsyncOpts.Delete = *deleteFlag
 	}
 
-	// check sudo-user arg
+	// Check sudo-user arg
 	if isFlagPassed(sudoUserFlagName) || isFlagPassed(sudoUserFlagShortName) {
 		rsyncOpts.SudoUser = sudoUserFlag
 	}
 
+	// Run rsync
 	err = rsync(projectDir, rsyncOpts)
 	if err != nil {
 		log.Fatal(err)
@@ -180,6 +202,9 @@ func rsync(projectDir string, opts RsyncOpts) error {
 	if opts.DryRun {
 		rsyncArgs = append(rsyncArgs, "--dry-run")
 	}
+
+	// rsync args
+	rsyncArgs = append(rsyncArgs, opts.RsyncArgs...)
 
 	// do the copy
 	rsyncArgs = append(rsyncArgs, opts.ProjectDir)

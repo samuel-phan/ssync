@@ -149,6 +149,20 @@ search for a `.ssync` in this order:
 
 If no project directory is found, it will assume that this is an **adhoc call**.
 
+## Pass arbitrary arguments to `rsync` directly
+
+You can pass arbitrary arguments to `rsync` directly after the `--` argument.
+
+For example:
+
+```bash
+ssync -n -- -q --exclude-from=my_excludes
+```
+
+- `-n` is evaluated by `ssync` as dry-run flag.
+- `-q --exclude-from=my_excludes` is passed as is to `rsync`.
+
+
 ## User configuration file
 
 `ssync` will create a user configuration file `~/.config/ssync/config.yaml` on
