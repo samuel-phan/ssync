@@ -4,6 +4,8 @@ git fetch --all
 
 echo "Make sure you are on the right branch:"
 git branch -vv
+echo -n "If you're on the right branch, press [Enter]..."
+read
 
 echo "Existing tags:"
 git --no-pager tag
@@ -16,6 +18,7 @@ export GITHUB_TOKEN="${github_token}"
 echo -n "Enter the version you want to release (eg: 0.0.1): "
 read version
 
+git push
 git tag -a "v${version}" -m "Release v${version}"
 git push origin "v${version}"
 
