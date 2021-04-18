@@ -83,7 +83,11 @@ func findProjectDir() (string, error) {
 		return "", err
 	}
 
-	for _, err := os.Stat(getProjectConfFile(dir)); os.IsNotExist(err) && dir != "/"; {
+	for dir != "/" {
+		debugf("findProjectDir: current dir %s", dir)
+		if _, err := os.Stat(getProjectConfFile(dir)); err == nil {
+			break
+		}
 		dir = path.Dir(dir)
 	}
 
