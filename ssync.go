@@ -80,7 +80,7 @@ Options:
 	flag.Parse()
 
 	// Load user config
-	userConfig, err := loadOrInitUserConf()
+	userConf, err := loadOrInitUserConf()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -94,7 +94,7 @@ Options:
 			projectDir = "."
 		}
 
-		err := initProjectConf(projectDir)
+		err := initProjectConf(projectDir, userConf)
 		if err != nil {
 			log.Fatal(err)
 		} else {
@@ -115,7 +115,7 @@ Options:
 		}
 
 		// get exclude opt from user config
-		rsyncOpts.Excludes = userConfig.Excludes
+		rsyncOpts.Excludes = userConf.Excludes
 	} else {
 		// Project dir found
 		projectConf, err := loadProjectConf(projectDir)

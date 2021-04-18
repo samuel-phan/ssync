@@ -23,7 +23,6 @@ type ProjectConf struct {
 var errProjectDirNotFound = errors.New("project directory not found")
 
 var (
-	// TODO: store it in a ~/.config/ssync/config file
 	defaultExcludes = []string{
 		".idea",
 		".vscode",
@@ -97,7 +96,7 @@ func findProjectDir() (string, error) {
 	}
 }
 
-func initProjectConf(projectDir string) error {
+func initProjectConf(projectDir string, userConf *UserConf) error {
 	projectConfFile := getProjectConfFile(projectDir)
 	if _, err := os.Stat(projectConfFile); err == nil {
 		// file exists
@@ -105,7 +104,7 @@ func initProjectConf(projectDir string) error {
 		return nil
 	} else if os.IsNotExist(err) {
 		// file does *not* exist
-		projectConf := newDefaultProjectConf()
+		projectConf := newDefaultProjectConf(userConf)
 		err := writeProjectConfFile(projectConf, projectConfFile)
 		if err == nil {
 			log.Printf("ssync configuration file \"%s\" created.", projectConfFile)
@@ -117,10 +116,10 @@ func initProjectConf(projectDir string) error {
 	}
 }
 
-func newDefaultProjectConf() *ProjectConf {
+func newDefaultProjectConf(userConf *UserConf) *ProjectConf {
 	return &ProjectConf{
 		Nodes:    []string{"server:/path"},
-		Excludes: defaultExcludes,
+		Excludes: userConf.Excludes,
 		Delete:   true,
 	}
 }
