@@ -213,21 +213,29 @@ upload the artifacts:
 - Select the `repo` scope.
 - Click on `Generate token`.
 
-Run:
+### With `make-release.sh`
 
+```bash
+./make-release.sh
 ```
+
+### Manual release
+
+Export your `GITHUB_TOKEN`:
+
+```bash
 export GITHUB_TOKEN="YOUR_GH_TOKEN"
 ```
 
-### Test the GoRelease configuration
+Test the GoRelease configuration:
 
-```
+```bash
 goreleaser --snapshot --skip-publish --rm-dist
 ```
 
-### Make the release
+Make the real release:
 
-```
+```bash
 # Make sure you pushed everything to the remote
 git push
 
