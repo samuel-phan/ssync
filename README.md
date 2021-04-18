@@ -7,7 +7,9 @@ Typical use case is this:
 You are working on project on personal computer.
 
 - you **modify some files locally**.
-- you want to **send the current sources to a remote host** (that may be on a cloud or in a protected network) for **testing** (compilation, execution in a specific environment that you can't have locally).
+- you want to **send the current sources to a remote host** (that may be on a
+  cloud or in a protected network) for **testing** (compilation, execution in a
+  specific environment that you can't have locally).
 
 and you repeat this loop during your work.
 
@@ -19,7 +21,8 @@ In the essence, it is just a wrapper around `rsync`.
 
 # Installation
 
-Go to the `Releases` page on the GitHub project and download the tarball for your platform.
+Go to the `Releases` page on the GitHub project and download the tarball for
+your platform.
 
 For example, for macOS (Darwin):
 
@@ -39,7 +42,8 @@ Copy the `ssync` executable somewhere in your `$PATH`. For example:
 $HOME/bin
 ```
 
-If it is not in your `$PATH`, add it to your `~/.bash_profile` (macOS), `~/.bashrc` (linux) or `~/.zshrc`:
+If it is not in your `$PATH`, add it to your `~/.bash_profile` (macOS),
+`~/.bashrc` (linux) or `~/.zshrc`:
 
 ```bash
 export PATH="$PATH:$HOME/bin"
@@ -78,11 +82,13 @@ And on the remote server, you will have this directory:
 myserver.example.com:/dest/path/foodir
 ```
 
-The `--exclude` files come from your user configuration file (see below).
+The `--exclude` files come from your user configuration file (see
+[User configuration file](#user-configuration-file)).
 
 ## With project initialization
 
-If you plan to copy several times the same directory, you should initialize the directory you want to copy. We call it the **project directory**.
+If you plan to copy several times the same directory, you should initialize the
+directory you want to copy. We call it the **project directory**.
 
 To initialize a project directory:
 
@@ -110,10 +116,14 @@ delete: true
 sudo-user: ""
 ```
 
-- `nodes`: the list of target nodes to copy to. The format is the same as the rsync's one, ie `SERVER:[remote/path]` (requires the `:`).
+- `nodes`: the list of target nodes to copy to. The format is the same as the
+  rsync's one, ie `SERVER:[remote/path]` (requires the `:`).
 - `excludes`: the list of excluded files.
 - `delete`: delete extraneous files from destination dirs.
-- `sudo-user`: destination user ownership. If you want to copy the destination files under another username (you must be able to `sudo su` as this destination user). Typical use case is when you copy files to a remote server in a directory owned by another user (`jenkins` or `root`).
+- `sudo-user`: destination user ownership. If you want to copy the destination
+  files under another username (you must be able to `sudo su` as this
+  destination user). Typical use case is when you copy files to a remote server
+  in a directory owned by another user (eg: `jenkins` or `root`).
 
 Customize the `nodes`, and **copy the project directory to the remote nodes**:
 
@@ -128,7 +138,8 @@ For example:
 - your project directory is `/my/project`
 - your current working directory is `/my/project/lib/foo`
 
-If you run `ssync` from the directory `/my/project/lib/foo`, `ssync` will search for a `.ssync` in this order:
+If you run `ssync` from the directory `/my/project/lib/foo`, `ssync` will
+search for a `.ssync` in this order:
 
 - `/my/project/lib/foo/.ssync`
 - `/my/project/lib/.ssync`
@@ -140,7 +151,8 @@ If no project directory is found, it will assume that this is an **adhoc call**.
 
 ## User configuration file
 
-`ssync` will create a user configuration file `~/.config/ssync/config.yaml` on the first run that is different from `-help`.
+`ssync` will create a user configuration file `~/.config/ssync/config.yaml` on
+the first run that is different from `-help`.
 
 Here is an example:
 
@@ -154,13 +166,15 @@ excludes:
 - __pycache__
 ```
 
-- `excludes`: file patterns that will be excluded from the rsync copy. This excludes list is used:
+- `excludes`: file patterns that will be excluded from the rsync copy. This
+  excludes list is used:
   - for adhoc copies (without any project initialization).
   - for project initialization (`ssync -init`).
 
 # Troubleshooting
 
-If you are facing any issue or have a suggestion, please feel free to file an issue on the `Issues` page of the project.
+If you are facing any issue or have a suggestion, please feel free to file an
+issue on the `Issues` page of the project.
 
 # Developer guide
 
@@ -192,7 +206,8 @@ brew install goreleaser
 
 ### Generate a GitHub token
 
-GoReleaser needs a new GitHub token to make a release in your repository and upload the artifacts:
+GoReleaser needs a new GitHub token to make a release in your repository and
+upload the artifacts:
 
 - Go to https://github.com/settings/tokens/new
 - Select the `repo` scope.
