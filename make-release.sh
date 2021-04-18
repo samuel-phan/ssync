@@ -10,6 +10,7 @@ git --no-pager tag
 
 echo -n "GitHub token for release (hidden output):"
 read -s github_token
+echo
 export GITHUB_TOKEN="${github_token}"
 
 echo "Which version do you want to release? Eg: 0.0.1"
@@ -19,7 +20,7 @@ git tag -a "v${version}" -m "Release v${version}"
 git push origin "v${version}"
 
 # Check the GoRelease locally
-goreleaser --skip-publish --rm-dist
+goreleaser --skip-publish --rm-dist || exit $?
 
 echo "Check the local release if fine. Press [Enter] to do the real release..."
 read
