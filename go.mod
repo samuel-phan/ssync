@@ -1,4 +1,4 @@
-module ssync
+module github.com/samuel-phan/ssync
 
 go 1.16
 
