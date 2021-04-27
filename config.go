@@ -1,3 +1,6 @@
+// Copyright 2021, Verizon Media.
+// Licensed under the terms of the Apache 2.0 License. See LICENSE file in project root for terms.
+
 package main
 
 import (
