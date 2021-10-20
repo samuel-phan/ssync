@@ -68,7 +68,7 @@ func main() {
     Rsync to the given nodes. The rsync options come from the project
     configuration if found; the user configuration, otherwise.
 
-You can pass any arbitrary arguments to rsync directly by addind "--":
+You can pass any arbitrary arguments to rsync directly by adding "--":
 
 %s -n -- -q --exclude-from=my_excludes
 
