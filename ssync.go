@@ -125,8 +125,7 @@ Options:
 
 	// Prepare arguments for rsync
 	rsyncOpts := RsyncOpts{
-		DryRun:    dryRunFlag,
-		RsyncArgs: rsyncArgs,
+		DryRun: dryRunFlag,
 	}
 
 	// Load project config if possible
@@ -152,6 +151,8 @@ Options:
 		rsyncOpts.Excludes = projectConf.Excludes
 		rsyncOpts.Delete = projectConf.Delete
 		rsyncOpts.SudoUser = projectConf.SudoUser
+		rsyncOpts.RsyncArgs = append(rsyncOpts.RsyncArgs, projectConf.ExtraArgs...)
+		rsyncOpts.RsyncArgs = append(rsyncOpts.RsyncArgs, rsyncArgs...)
 	}
 
 	// Check nodes arg

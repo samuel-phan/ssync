@@ -114,6 +114,7 @@ excludes:
 - __pycache__
 delete: true
 sudo-user: ""
+extra-args: []
 ```
 
 - `nodes`: the list of target nodes to copy to. The format is the same as the
@@ -124,6 +125,7 @@ sudo-user: ""
   files under another username (you must be able to `sudo su` as this
   destination user). Typical use case is when you copy files to a remote server
   in a directory owned by another user (eg: `jenkins` or `root`).
+- `extra-args`: extra arguments to pass to `rsync`.
 
 Customize the `nodes`, and **copy the project directory to the remote nodes**:
 
@@ -162,6 +164,22 @@ ssync -n -- -q --exclude-from=my_excludes
 - `-n` is evaluated by `ssync` as dry-run flag.
 - `-q --exclude-from=my_excludes` is passed as is to `rsync`.
 
+You can also add these arbitrary arguments in the `.ssync` file like so:
+
+```yaml
+extra-args:
+- -n
+- -q
+- --exclude-from=my_excludes`
+```
+
+or this to forward your ssh-agent keys:
+
+```yaml
+extra-args:
+- -e
+- ssh -A
+```
 
 ## User configuration file
 

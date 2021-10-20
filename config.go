@@ -17,10 +17,11 @@ type UserConf struct {
 }
 
 type ProjectConf struct {
-	Nodes    []string
-	Excludes []string
-	Delete   bool
-	SudoUser string `yaml:"sudo-user"`
+	Nodes     []string
+	Excludes  []string
+	Delete    bool
+	SudoUser  string   `yaml:"sudo-user"`
+	ExtraArgs []string `yaml:"extra-args"`
 }
 
 var errProjectDirNotFound = errors.New("project directory not found")
