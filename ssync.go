@@ -1,4 +1,4 @@
-// Copyright 2021, Yahoo.
+// Copyright 2021 Yahoo Inc.
 // Licensed under the terms of the Apache 2.0 License. See LICENSE file in project root for terms.
 
 package main
