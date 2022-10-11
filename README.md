@@ -170,7 +170,7 @@ You can also add these arbitrary arguments in the `.ssync` file like so:
 extra-args:
 - -n
 - -q
-- --exclude-from=my_excludes`
+- --exclude-from=my_excludes
 ```
 
 or this to forward your ssh-agent keys:
