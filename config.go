@@ -31,6 +31,7 @@ var (
 		".idea",
 		".vscode",
 		".terraform",
+		"terraform.tfstate",
 		"*.tfstate.backup",
 		"*.py[co]",
 		"__pycache__",
