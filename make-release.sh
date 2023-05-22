@@ -25,7 +25,7 @@ git tag -a "v${version}" -m "Release v${version}"
 git push origin "v${version}"
 
 # Check the GoRelease locally
-goreleaser --skip-publish --rm-dist || exit $?
+goreleaser --skip-publish --clean || exit $?
 
 echo "Check the local release if fine. Type \"yes\" to do the real release..."
 read answer
@@ -35,4 +35,4 @@ if [ "${answer}" != "yes" ]; then
 fi
 
 # If all good, do the real release
-goreleaser --rm-dist
+goreleaser --clean

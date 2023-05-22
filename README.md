@@ -264,7 +264,7 @@ export GITHUB_TOKEN="YOUR_GH_TOKEN"
 Test the GoRelease configuration:
 
 ```bash
-goreleaser --snapshot --skip-publish --rm-dist
+goreleaser --snapshot --skip-publish --clean
 ```
 
 Make the real release:
@@ -278,8 +278,8 @@ git tag -a v0.1.0 -m "Release v0.1.0"
 git push origin v0.1.0
 
 # Check the GoRelease locally
-goreleaser --skip-publish --rm-dist
+goreleaser --skip-publish --clean
 
 # If all good, do the real release
-goreleaser --rm-dist
+goreleaser --clean
 ```
