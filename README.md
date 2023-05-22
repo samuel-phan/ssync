@@ -73,7 +73,7 @@ ssync myserver.example.com:/dest/path
 You will see the executed `rsync` command:
 
 ```bash
-Running: rsync -avzP --exclude .idea --exclude .vscode --exclude .terraform --exclude *.tfstate.backup --exclude *.py[co] --exclude __pycache__ --exclude foo /my/current/working/foodir myserver.example.com:/dest/path
+Running: rsync -avzP --exclude .idea --exclude .vscode --exclude .terraform --exclude terraform.tfstate --exclude *.tfstate.backup --exclude *.py[co] --exclude __pycache__ --exclude foo /my/current/working/foodir myserver.example.com:/dest/path
 ```
 
 And on the remote server, you will have this directory:
@@ -109,6 +109,7 @@ excludes:
 - .idea
 - .vscode
 - .terraform
+- terraform.tfstate
 - '*.tfstate.backup'
 - '*.py[co]'
 - __pycache__
@@ -193,6 +194,7 @@ excludes:
 - .idea
 - .vscode
 - .terraform
+- terraform.tfstate
 - '*.tfstate.backup'
 - '*.py[co]'
 - __pycache__
