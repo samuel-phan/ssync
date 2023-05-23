@@ -21,6 +21,20 @@ In the essence, it is just a wrapper around `rsync`.
 
 # Installation
 
+## Installation from the sources
+
+Requirements:
+
+- Go 1.16+
+
+Run:
+
+```bash
+go install github.com/samuel-phan/ssync@latest
+```
+
+## Installation from the binaries
+
 Go to the `Releases` page on the GitHub project and download the tarball for
 your platform.
 
